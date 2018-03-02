@@ -1,6 +1,6 @@
 # Kubernetes Ansible playbook for Raspbian Stretch on Raspberry Pis
 
-
+Ansible playbook for Raspberry Pis. Inspiration from many sources, not least of which https://gist.github.com/alexellis/fdbc90de7691a1b9edb545c17da2d975
 
 
 ## Pre-requisites
@@ -27,8 +27,9 @@ $ ansible-playbook cluster.yml -i host
 
 ## Roadmap
 
-- [ ] Access to the dashboard remotely
-- [ ] Separate into ansible roles
-- [ ] Worker nodes
-- [ ] service mesh
+- [x] Access to the dashboard remotely
+- [ ] Refactor into ansible roles
+- [ ] Provision worker nodes
+- [ ] Add a service mesh
 - [ ] Install the dashboard using kubectl from the ansible controller, not the ansible target
+- [ ] Yaml files stored in ansible playbook, not on the Internet

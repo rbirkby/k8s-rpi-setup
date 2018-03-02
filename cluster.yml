@@ -91,7 +91,7 @@
 
     - name: intialize master
       shell: kubeadm init
-
+    
     - name: create token
       shell: kubeadm token create
       register: token
@@ -112,8 +112,21 @@
         owner: pi
         group: pi
 
+    - name: Install CNI networking
+      shell: kubectl apply -f https://git.io/weave-kube-1.6
+      become: false
+
+    - name: copy rbac to target
+      copy:
+        src: rbac.yml
+        dest: /tmp/rbac.yml
+
+    - name: grant full access to the default user
+      shell: kubectl apply -f /tmp/rbac.yml
+      become: false
+
     - name: Install kubernetes dashboard
-      shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+      shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard-arm.yaml
       become: false
 
     - name: Expose dashboard
