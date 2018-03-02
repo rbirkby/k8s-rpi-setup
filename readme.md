@@ -22,13 +22,17 @@ $ ssh-copy-id pi@node-ip-address
 Add all your hosts to the host inventory file. You should have a single master and multiple worker nodes. Then run the ansible playbook: 
 
 ```bash 
-$ ansible-playbook cluster.yml -i host
+$ ansible-playbook cluster.yml -i hosts
 ```
+
+The playbook will print 2 variables
+* the worker-node join token with a 24 hour lifetime
+* the port number of the dashboard exposed on each node
 
 ## Roadmap
 
 - [x] Access to the dashboard remotely
-- [ ] Refactor into ansible roles
+- [x] Refactor into ansible roles
 - [ ] Provision worker nodes
 - [ ] Add a service mesh
 - [ ] Install the dashboard using kubectl from the ansible controller, not the ansible target

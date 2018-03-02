@@ -4,101 +4,18 @@
 # ansible-playbook cluster.yml -i hosts
 
 - name: kubernetes
-  hosts: all
+  hosts: master
   become: true
   gather_facts: false
+  roles:
+    - kubernetes
+    - control-plane
   tasks:
     # By default, gather_facts uses the become user (root) specified in the playbook #13592
     - name: gather facts for regular (not-elevated) user
       setup:
       become: false
-
-    - name: Change Hostname
-      copy:
-        content: "{{ hostname }}"
-        dest: /etc/hostname
-
-    - name: local hostname discovery
-      lineinfile:
-        path: /etc/hosts
-        line: 127.0.0.1 {{hostname}}
-    
-    - name: add docker repo key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-
-    - name: add docker repo
-      apt_repository:
-        repo: deb [arch=armhf] https://download.docker.com/linux/raspbian stretch edge
-        filename: docker
-        state: present
-
-    - name: install docker
-      apt:
-        name: docker-ce
-        update_cache: yes
-        state: present
-
-    - user: # usermod pi -aG docker
-        name: pi
-        groups: docker
-        append: yes        
-    
-    - name: Disable swap
-      shell: |
-        dphys-swapfile swapoff
-        dphys-swapfile uninstall
-        update-rc.d dphys-swapfile remove
-    
-    - name: Set cgroups config
-      shell: |
-        CGROUPCONFIG='cgroup_enable=cpuset cgroup_memory=1'
-        if ! grep -q "$CGROUPCONFIG" /boot/cmdline.txt; then
-          BOOTFILE=`cat /boot/cmdline.txt`
-          echo ${BOOTFILE} $CGROUPCONFIG > /boot/cmdline.txt
-        fi
-    
-    - name: Reboot
-      shell: sleep 2 && /sbin/shutdown -r now
-      async: 1
-      poll: 0
-    
-    - name: waiting for boot
-      wait_for_connection:
-        delay: 5
-
-    - name: add kubernetes repo key
-      apt_key: # curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-        state: present
-
-    - name: add kubernetes repo
-      apt_repository: # echo "deb http://apt.kubernetes.io/ kubernetes-stretch main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-        repo: deb http://apt.kubernetes.io/ kubernetes-stretch main
-        state: present
-        filename: kubernetes
-
-    - name: install kubernetes
-      apt: #apt-get install -qy kubeadm
-        name: kubeadm 
-        update_cache: yes #apt-get update -q
-        state: present
-
-# k8s master
-    - name: reset master
-      shell: kubeadm reset
-
-    - name: intialize master
-      shell: kubeadm init
-    
-    - name: create token
-      shell: kubeadm token create
-      register: token
-    
-    - debug: 
-        msg: "{{token.stdout}}"
-
+      
     - name: create regular user .kube directory
       file:
         path: "{{ansible_env.HOME}}/.kube"

@@ -1,5 +1,5 @@
-[all]
+[master]
 192.168.2.92 hostname=rpi3-k8s-1
 
-[all:vars]
+[master:vars]
 ansible_ssh_user=pi

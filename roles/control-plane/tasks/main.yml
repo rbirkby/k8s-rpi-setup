@@ -1,0 +1,13 @@
+---
+- name: reset master
+  shell: kubeadm reset
+
+- name: intialize master
+  shell: kubeadm init
+
+- name: create token
+  shell: kubeadm token create
+  register: token
+
+- debug: 
+    msg: "{{token.stdout}}"
