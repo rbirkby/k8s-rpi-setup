@@ -62,12 +62,12 @@
 
 - name: add kubernetes repo
   apt_repository:
-    repo: deb http://apt.kubernetes.io/ kubernetes-stretch main
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
     state: present
     filename: kubernetes
 
 - name: install kubernetes
   apt:
-    name: kubeadm 
     update_cache: yes
+    name: kubeadm 
     state: present
