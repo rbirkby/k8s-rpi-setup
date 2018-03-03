@@ -36,8 +36,9 @@ The playbook will print 2 variables
 
 - [x] Access to the dashboard remotely
 - [x] Refactor into ansible roles
-- [ ] Provision worker nodes
-- [ ] Add a service mesh
+- [x] Provision worker nodes
+- [ ] Multi-master
+- [ ] Service mesh
 - [ ] Install the dashboard using kubectl from the ansible controller, not the ansible target
-- [ ] Yaml files stored in ansible playbook, not on the Internet
-- [ ] Run helm/tiller
+- [ ] k8s Yaml files stored in ansible playbook, not on the Internet
+- [ ] Install helm/tiller

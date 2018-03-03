@@ -4,57 +4,26 @@
 # ansible-playbook cluster.yml -i hosts
 
 - name: kubernetes
-  hosts: master
+  hosts: all
   become: true
   gather_facts: false
   roles:
     - kubernetes
+  
+- name: control plane
+  hosts: master
+  become: true
+  gather_facts: false
+  roles:
     - control-plane
+
+- name: workers
+  hosts: worker
+  become: true
+  gather_facts: false
   tasks:
-    # By default, gather_facts uses the become user (root) specified in the playbook #13592
-    - name: gather facts for regular (not-elevated) user
-      setup:
-      become: false
+    - name: reset
+      shell: kubeadm reset
       
-    - name: create regular user .kube directory
-      file:
-        path: "{{ansible_env.HOME}}/.kube"
-        state: directory
-
-    - name: copy config to .kube directory
-      copy:
-        src: /etc/kubernetes/admin.conf
-        dest: "{{ansible_env.HOME}}/.kube/config"
-        remote_src: yes
-        owner: pi
-        group: pi
-
-    - name: Install CNI networking
-      shell: kubectl apply -f https://git.io/weave-kube-1.6
-      become: false
-
-    - name: copy rbac to target
-      copy:
-        src: rbac.yml
-        dest: /tmp/rbac.yml
-
-    - name: grant full access to the default user
-      shell: kubectl apply -f /tmp/rbac.yml
-      become: false
-
-    - name: Install kubernetes dashboard
-      shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard-arm.yaml
-      become: false
-
-    - name: Expose dashboard
-      shell: kubectl expose deployment kubernetes-dashboard --type=NodePort --name=external-kubernetes-dashboard --namespace=kube-system
-      become: false
-
-    - name: Get Dashboard Port
-      shell: kubectl get services external-kubernetes-dashboard --namespace=kube-system -o=jsonpath='{.spec.ports[0].nodePort}'
-      register: dashboardport
-      become: false
-
-    - debug:
-        msg: "{{dashboardport.stdout}}"
-
+    - name: join cluster
+      shell: "{{hostvars['token-holder']['joincmd']}}"
