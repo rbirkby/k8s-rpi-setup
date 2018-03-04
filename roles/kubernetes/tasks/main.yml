@@ -8,7 +8,7 @@
 - name: local hostname discovery
   lineinfile:
     path: /etc/hosts
-    line: 127.0.0.1 {{hostname}}
+    line: "127.0.0.1\t{{hostname}}"
 
 - name: add docker repo key
   apt_key:
