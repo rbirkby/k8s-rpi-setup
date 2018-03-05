@@ -32,6 +32,30 @@ The playbook will print 2 variables
 
 [![asciicast](https://asciinema.org/a/2idgjSVX9A2UUpLROCdYlQUKC.png)](https://asciinema.org/a/2idgjSVX9A2UUpLROCdYlQUKC?speed=4)
 
+## Local kubernetes CLI install
+
+To get the kubectl package installed on a Windows-based, WSL (Ubuntu) environment: 
+
+```bash
+$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+$ sudo apt-get install software-properties-common
+$ sudo add-apt-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+$ sudo apt-get update
+$ sudo apt-get install kubectl
+```
+
+Then to copy your .kube directory from master to host environment:
+
+```bash
+$ scp -r pi@master-ip-address:.kube ~
+```
+
+Test it all works:
+
+```bash
+$ kubectl get pods --namespace=kube-system
+```
+
 ## Roadmap
 
 - [x] Access to the dashboard remotely
