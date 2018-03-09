@@ -27,6 +27,12 @@
     update_cache: yes
     state: present
 
+- name: Use local docker registry for caching
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+  notify: restart docker
+
 - user: 
     name: pi
     groups: docker
