@@ -67,3 +67,4 @@ $ kubectl get pods --namespace=kube-system
 - [ ] Install the dashboard using kubectl from the ansible controller, not the ansible target
 - [ ] k8s Yaml files stored in ansible playbook, not on the Internet
 - [ ] Install helm/tiller
+- [ ] Separate apt/docker caches into a separate role to be selectively included
