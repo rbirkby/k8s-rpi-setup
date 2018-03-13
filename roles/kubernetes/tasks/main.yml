@@ -79,8 +79,21 @@
     state: present
     filename: kubernetes
 
-- name: install kubernetes
+- name: Update apt cache
   apt:
     update_cache: yes
+
+- name: install kubelet
+  apt:
+    name: kubelet
+    state: latest
+
+- name: install kubectl
+  apt:
+    name: kubectl 
+    state: latest
+    
+- name: install kubeadm
+  apt:
     name: kubeadm 
     state: latest
