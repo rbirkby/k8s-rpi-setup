@@ -4,6 +4,7 @@
 [worker]
 192.168.2.91 hostname=rpi3-k8s-2
 192.168.2.90 hostname=rpi3-k8s-3
+192.168.2.89 hostname=rpi3-k8s-4
 
 [master:vars]
 ansible_ssh_user=pi

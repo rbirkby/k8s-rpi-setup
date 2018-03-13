@@ -10,6 +10,13 @@
     path: /etc/hosts
     line: "127.0.0.1\t{{hostname}}"
 
+- name: use network-local apt proxy
+  lineinfile:
+    path: /etc/apt/apt.conf
+    line: Acquire::http::Proxy "http://192.168.2.20:3142";
+    state: present
+    create: True
+
 - name: add docker repo key
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
@@ -27,7 +34,7 @@
     update_cache: yes
     state: present
 
-- name: Use local docker registry for caching
+- name: Use network-local docker registry for caching
   template:
     src: daemon.json.j2
     dest: /etc/docker/daemon.json
