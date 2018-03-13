@@ -3,6 +3,7 @@
 Ansible playbook for Raspberry Pis. Inspiration from many sources, not least of which https://gist.github.com/alexellis/fdbc90de7691a1b9edb545c17da2d975
 
 ![](cluster.jpg)
+![](cluster2.jpg)
 
 ## Pre-requisites
 
