@@ -6,8 +6,8 @@
 192.168.2.90 hostname=rpi3-k8s-3
 192.168.2.89 hostname=rpi3-k8s-4
 
-[master:vars]
+[all:vars]
 ansible_ssh_user=pi
-
-[worker:vars]
-ansible_ssh_user=pi
+apt_cacher_dns=192.168.2.20
+docker_mirror_dns=192.168.2.20
+docker_registry_dns=192.168.2.20

@@ -10,10 +10,25 @@
     path: /etc/hosts
     line: "127.0.0.1\t{{hostname}}"
 
+- name: network-local apt-cacher discovery
+  lineinfile:
+    path: /etc/hosts
+    line: "{{apt_cacher_dns}}\tapt-cacher.local"
+
+- name: network-local docker registry mirror discovery
+  lineinfile:
+    path: /etc/hosts
+    line: "{{docker_mirror_dns}}\tdocker-mirror.local"
+
+- name: network-local docker registry discovery
+  lineinfile:
+    path: /etc/hosts
+    line: "{{docker_registry_dns}}\tdocker-registry.local"
+
 - name: use network-local apt proxy
   lineinfile:
     path: /etc/apt/apt.conf
-    line: Acquire::http::Proxy "http://192.168.2.20:3142";
+    line: Acquire::http::Proxy "http://apt-cacher.local:3142";
     state: present
     create: True
 
